@@ -1,0 +1,22 @@
+version: "3.6"
+services:
+  web:
+    build: apache
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./apache/httpd.conf:/etc/httpd/conf/httpd.conf
+      - ./apache/php.ini:/etc/php.ini
+      - ./apache/conf.d:/etc/httpd/conf.d
+      - ./php:/var/www/html
+    links:
+      - mariadb
+  mariadb:
+    build: mysql
+    restart: always
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/my.cnf
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "1"
+      MYSQL_ROOT_PASSWORD: ""
